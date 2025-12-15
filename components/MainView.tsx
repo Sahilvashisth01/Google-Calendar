@@ -1,7 +1,6 @@
 "use client";
 import {
   CalendarEventType,
-  useDateStore,
   useEventStore,
   useViewStore,
 } from "@/lib/store";

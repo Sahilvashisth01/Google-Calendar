@@ -66,7 +66,8 @@ export default function EventPopover({
       try {
         const result = await createEvent(formData);
         if ("error" in result) {
-          setError(result.error);
+          setError(result.error ?? null);
+;
         } else if (result.success) {
           setSuccess(result.success);
           setTimeout(() => {

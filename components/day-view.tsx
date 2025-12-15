@@ -6,16 +6,15 @@ import { ScrollArea } from "./ui/scroll-area";
 import { getHours, isCurrentDay } from "@/lib/getTime";
 import { EventRenderer } from "./event-renderer";
 
-
 export default function DayView() {
   const [currentTime, setCurrentTime] = useState(dayjs());
-  const { openPopover, events } = useEventStore();
+  const { openEventForm, events } = useEventStore();
   const { userSelectedDate, setDate } = useDateStore();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(dayjs());
-    }, 60000); // Update every minute
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -28,18 +27,18 @@ export default function DayView() {
         <div className="w-16 border-r border-gray-300 text-xs">GMT +2</div>
         <div className="flex w-16 flex-col items-center">
           <div className={cn("text-xs", isToday && "text-blue-600")}>
-            {userSelectedDate.format("ddd")}{" "}
-          </div>{" "}
+            {userSelectedDate.format("ddd")}
+          </div>
           <div
             className={cn(
               "h-12 w-12 rounded-full p-2 text-2xl",
               isToday && "bg-blue-600 text-white",
             )}
           >
-            {userSelectedDate.format("DD")}{" "}
+            {userSelectedDate.format("DD")}
           </div>
         </div>
-        <div></div>
+        <div />
       </div>
 
       <ScrollArea className="h-[70vh]">
@@ -55,7 +54,7 @@ export default function DayView() {
             ))}
           </div>
 
-          {/* Day/Boxes Column */}
+          {/* Day Grid */}
           <div className="relative border-r border-gray-300">
             {getHours.map((hour, i) => (
               <div
@@ -63,7 +62,7 @@ export default function DayView() {
                 className="relative flex h-16 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
                 onClick={() => {
                   setDate(userSelectedDate.hour(hour.hour()));
-                  openPopover();
+                  openEventForm();
                 }}
               >
                 <EventRenderer
@@ -77,7 +76,7 @@ export default function DayView() {
             {/* Current time indicator */}
             {isCurrentDay(userSelectedDate) && (
               <div
-                className={cn("absolute h-0.5 w-full bg-red-500")}
+                className="absolute h-0.5 w-full bg-red-500"
                 style={{
                   top: `${(currentTime.hour() / 24) * 100}%`,
                 }}

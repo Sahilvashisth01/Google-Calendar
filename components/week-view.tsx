@@ -6,17 +6,15 @@ import React, { useEffect, useState } from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import { EventRenderer } from "./event-renderer";
 
-
 export default function WeekView() {
   const [currentTime, setCurrentTime] = useState(dayjs());
-  const { openPopover, events } = useEventStore();
-
+  const { openEventForm, events } = useEventStore();
   const { userSelectedDate, setDate } = useDateStore();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(dayjs());
-    }, 60000); // Update every minute
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -29,8 +27,6 @@ export default function WeekView() {
           </div>
         </div>
 
-        {/* Week View Header */}
-
         {getWeekDays(userSelectedDate).map(({ currentDate, today }, index) => (
           <div key={index} className="flex flex-col items-center">
             <div className={cn("text-xs", today && "text-blue-600")}>
@@ -42,13 +38,11 @@ export default function WeekView() {
                 today && "bg-blue-600 text-white",
               )}
             >
-              {currentDate.format("DD")}{" "}
+              {currentDate.format("DD")}
             </div>
           </div>
         ))}
       </div>
-
-      {/* Time Column & Corresponding Boxes of time per each date  */}
 
       <ScrollArea className="h-[70vh]">
         <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] px-4 py-2">
@@ -63,8 +57,7 @@ export default function WeekView() {
             ))}
           </div>
 
-          {/* Week Days Corresponding Boxes */}
-
+          {/* Week Columns */}
           {getWeekDays(userSelectedDate).map(
             ({ isCurrentDay, today }, index) => {
               const dayDate = userSelectedDate
@@ -79,7 +72,7 @@ export default function WeekView() {
                       className="relative flex h-16 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
                       onClick={() => {
                         setDate(dayDate.hour(hour.hour()));
-                        openPopover();
+                        openEventForm();
                       }}
                     >
                       <EventRenderer
@@ -89,11 +82,10 @@ export default function WeekView() {
                       />
                     </div>
                   ))}
-                  {/* Current time indicator */}
 
                   {isCurrentDay(dayDate) && today && (
                     <div
-                      className={cn("absolute h-0.5 w-full bg-red-500")}
+                      className="absolute h-0.5 w-full bg-red-500"
                       style={{
                         top: `${(currentTime.hour() / 24) * 100}%`,
                       }}
