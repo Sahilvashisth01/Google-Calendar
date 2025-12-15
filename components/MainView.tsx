@@ -9,7 +9,6 @@ import MonthView from "./month-view";
 import SideBar from "./sidebar/SideBar";
 import WeekView from "./week-view";
 import DayView from "./day-view";
-import EventPopover from "./event-popover";
 import  EventSummaryPopover  from "./event-summary-popover";
 import { useEffect } from "react";
 import dayjs from "dayjs";
@@ -22,13 +21,15 @@ export default function MainView({
   const { selectedView } = useViewStore();
 
   const {
-    isPopoverOpen,
-    closePopover,
     isEventSummaryOpen,
     closeEventSummary,
+    isEventFormOpen,
+    closeEventForm,
     selectedEvent,
     setEvents,
   } = useEventStore();
+  
+  
 
   const { userSelectedDate } = useDateStore();
 
@@ -53,13 +54,7 @@ export default function MainView({
         {selectedView === "week" && <WeekView />}
         {selectedView === "day" && <DayView />}
       </div>
-      {isPopoverOpen && (
-        <EventPopover
-          isOpen={isPopoverOpen}
-          onClose={closePopover}
-          date={userSelectedDate.format("YYYY-MM-DD")}
-        />
-      )}
+      
 
       {isEventSummaryOpen && selectedEvent && (
         <EventSummaryPopover
