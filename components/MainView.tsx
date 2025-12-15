@@ -23,16 +23,13 @@ export default function MainView({
   const {
     isEventSummaryOpen,
     closeEventSummary,
-    isEventFormOpen,
-    closeEventForm,
     selectedEvent,
     setEvents,
   } = useEventStore();
   
   
 
-  const { userSelectedDate } = useDateStore();
-
+ 
   useEffect(() => {
     const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
       id: event.id,
